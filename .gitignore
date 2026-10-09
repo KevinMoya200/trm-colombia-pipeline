@@ -1,0 +1,9 @@
+# Bodega local y datos crudos: se regeneran al correr el pipeline
+data/
+# Salidas del modo de prueba con datos sinteticos
+output/sample/
+docs/sample/
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/

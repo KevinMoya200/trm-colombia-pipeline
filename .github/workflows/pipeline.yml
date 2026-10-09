@@ -1,0 +1,44 @@
+name: pipeline-trm
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 13 * * 1"  # lunes, 8:00 a. m. hora de Colombia
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Pruebas
+        run: pytest -q
+
+      - name: Correr el pipeline
+        run: python -m pipeline.run --full-refresh
+
+      - name: Publicar gráfico y CSV actualizados
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/trm_ultimo_anio.png docs/resumen.md output/*.csv
+          if git diff --cached --quiet; then
+            echo "Sin cambios en los datos"
+          else
+            git commit -m "Actualiza datos y gráfico de la TRM [skip ci]"
+            git push
+          fi

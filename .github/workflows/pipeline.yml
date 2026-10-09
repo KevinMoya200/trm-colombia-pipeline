@@ -10,6 +10,11 @@ on:
 permissions:
   contents: write
 
+# Una corrida a la vez: si llegan dos pushes seguidos, la segunda espera a la primera
+concurrency:
+  group: pipeline-trm
+  cancel-in-progress: false
+
 jobs:
   run:
     runs-on: ubuntu-24.04
@@ -38,7 +43,10 @@ jobs:
           git add docs/trm_ultimo_anio.png docs/resumen.md output/*.csv
           if git diff --cached --quiet; then
             echo "Sin cambios en los datos"
-          else
-            git commit -m "Actualiza datos y gráfico de la TRM [skip ci]"
-            git push
+            exit 0
           fi
+          git commit -m "Actualiza datos y gráfico de la TRM [skip ci]"
+          # Si main avanzó durante la corrida, el commit se reaplica encima
+          # y en los archivos generados gana la versión recién calculada
+          git pull --rebase -X theirs origin main
+          git push

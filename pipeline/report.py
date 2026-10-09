@@ -82,7 +82,9 @@ def plot_last_year(con: duckdb.DuckDBPyConnection, out_path: Path, sample: bool 
                  color=INK, fontweight="bold", pad=22)
     ax.text(0, 1.02, "Pesos colombianos por dólar", transform=ax.transAxes,
             fontsize=9.5, color=INK_2)
-    ax.legend(loc="upper left", frameon=False, fontsize=9, labelcolor=INK_2)
+    # Leyenda arriba a la derecha, fuera del área de datos, para que nunca tape la serie
+    ax.legend(loc="lower right", bbox_to_anchor=(1.0, 1.0), ncol=2, frameon=False,
+              fontsize=9, labelcolor=INK_2, borderaxespad=0.3, handlelength=1.6)
     fig.text(0.01, 0.01,
              f"{FUENTE_SINTETICA if sample else FUENTE_REAL} Corte: {last['fecha']:%Y-%m-%d}. "
              f"Generado el {date.today():%Y-%m-%d}.",
@@ -110,7 +112,7 @@ def write_summary(con: duckdb.DuckDBPyConnection, out_path: Path, sample: bool =
         f"| TRM actual | ${_pesos(float(r['trm_actual']), 2)} |",
         f"| Mínimo 52 semanas | ${_pesos(float(r['minimo_52_semanas']), 2)} |",
         f"| Máximo 52 semanas | ${_pesos(float(r['maximo_52_semanas']), 2)} |",
-        f"| Variación en el año | {var_text} |",
+        f"| Variación en lo corrido del año | {var_text} |",
         f"| Días en la bodega | {_pesos(float(r['dias_en_bodega']))} |",
         "",
     ]

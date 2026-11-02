@@ -4,9 +4,9 @@ Este archivo lo genera el pipeline en cada ejecución. Fuente: Superintendencia 
 
 | Indicador | Valor |
 | --- | --- |
-| Fecha de corte | 2026-10-26 |
-| TRM actual | $3.158,43 |
+| Fecha de corte | 2026-11-03 |
+| TRM actual | $3.182,99 |
 | Mínimo 52 semanas | $3.048,12 |
-| Máximo 52 semanas | $3.885,29 |
-| Variación en lo corrido del año | -15,93 % |
-| Días en la bodega | 12.748 |
+| Máximo 52 semanas | $3.874,71 |
+| Variación en lo corrido del año | -15,28 % |
+| Días en la bodega | 12.756 |
